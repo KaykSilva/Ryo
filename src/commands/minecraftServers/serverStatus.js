@@ -11,22 +11,22 @@ module.exports = {
         try {
             // Busca informações do servidor
             const serverInfo = await api.get();
+            
 
             // Verifica se os dados esperados estão presentes
-            const status = serverInfo.online ? '*Online*' : '*Offline*';
+            const status = serverInfo.data.online === true ? '*Online*' : '*Offline*';
             const ip = serverInfo.data.ip || 'Censurado';
             const version = serverInfo.data.server.name || 'Servidor offline';
-            const playerOnline = serverInfo.online ? "Jogadores online" : "Servidor Offline"
+            const playerOnline = serverInfo.data.online ? "Jogadores online" : "Servidor Offline"
             const playersOnline = serverInfo.data.players?.now ?? 'Desconhecido';
             const playersMax = serverInfo.data.players?.max ?? 'Desconhecido';
             const userIcon = interaction.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
-
+            
             let playerList = '';
             if (serverInfo.data.players.sample && serverInfo.data.players.sample.length > 0) {
-                playerList = serverInfo.data.players.sample.map(player => `${player.name}`).join('\n');
-                console.log(playerList)
+                playerList = serverInfo.data.players.sample.map(player =>  `${player.name}`).join('\n');
             } else {
-                playerList = 'Servidor está offline';
+                playerList = 'Nenhum jogador conectado';
             }
             
             // Cria um embed com informações dinâmicas do servidor
