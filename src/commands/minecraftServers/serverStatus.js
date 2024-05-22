@@ -11,25 +11,24 @@ module.exports = {
         try {
             // Busca informações do servidor
             const serverInfo = await api.get();
+
             // Verifica se os dados esperados estão presentes
-            const status = serverInfo.status ? '*Online*' : '*Offline*';
-            const ip = serverInfo.data.ip || 'Desconhecido';
-            const version = serverInfo.data.server.name || 'Desconhecida';
+            const status = serverInfo.online ? '*Online*' : '*Offline*';
+            const ip = serverInfo.data.ip || 'Censurado';
+            const version = serverInfo.data.server.name || 'Servidor offline';
+            const playerOnline = serverInfo.online ? "Jogadores online" : "Servidor Offline"
             const playersOnline = serverInfo.data.players?.now ?? 'Desconhecido';
             const playersMax = serverInfo.data.players?.max ?? 'Desconhecido';
-            const icon = serverInfo.data.icon || 'https://i.imgur.com/AfFp7pu.png';
             const userIcon = interaction.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
 
-            console.log()
             let playerList = '';
             if (serverInfo.data.players.sample && serverInfo.data.players.sample.length > 0) {
                 playerList = serverInfo.data.players.sample.map(player => `${player.name}`).join('\n');
                 console.log(playerList)
             } else {
-                playerList = 'Nenhum jogador online';
+                playerList = 'Servidor está offline';
             }
             
-
             // Cria um embed com informações dinâmicas do servidor
             const serverEmbed = new EmbedBuilder()
                 .setColor(0x0099FF)
@@ -39,11 +38,10 @@ module.exports = {
                 .addFields(
                     { name: 'Ip do servidor', value: ip, inline: true },
                     { name: 'Versão', value: version, inline: true },
-                    { name: 'Jogadores Online', value: `${playersOnline}/${playersMax}`, inline: true },
+                    { name: playerOnline, value: `${playersOnline}/${playersMax}`, inline: true },
                     { name: 'Lista de Jogadores Online', value: playerList }
                 )
                 .setTimestamp()
-
 
             // Envia o embed como resposta à interação
             await interaction.reply({ embeds: [serverEmbed] });
