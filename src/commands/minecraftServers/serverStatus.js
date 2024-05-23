@@ -12,10 +12,9 @@ module.exports = {
             // Busca informações do servidor
             const serverInfo = await api.get();
             
-
             // Verifica se os dados esperados estão presentes
             const status = serverInfo.data.online === true ? '*Online*' : '*Offline*';
-            const ip = serverInfo.data.ip || 'Censurado';
+            const ip = serverInfo.data.ip || 'aftergang.cloud';
             const version = serverInfo.data.server.name || 'Servidor offline';
             const playerOnline = serverInfo.data.online ? "Jogadores online" : "Servidor Offline"
             const playersOnline = serverInfo.data.players?.now ?? 'Desconhecido';

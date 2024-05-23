@@ -9,7 +9,7 @@ const client = new Client({ intents:
 	GatewayIntentBits.GuildMembers,
 	GatewayIntentBits.MessageContent,
 	GatewayIntentBits.GuildVoiceStates] });
-
+    
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, './src/commands');
 const commandFolders = fs.readdirSync(foldersPath);
