@@ -6,6 +6,6 @@ module.exports = {
 	once: true,
 	execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-		client.user.setPresence({ activities: [{ name: 'Minecraft' }], status: PresenceUpdateStatus.Online });
+		client.user.setPresence({ activities: [{ name: 'Ryo' }], status: PresenceUpdateStatus.Online });
 	},
 };

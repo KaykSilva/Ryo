@@ -24,7 +24,7 @@ const ownerId = "783914991006253087";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("whitelist")
-        .setDescription("Adiciona administrador ao servidor do mine")
+        .setDescription("Adiciona administrador a Ryo")
         .addUserOption(option => 
             option
                 .setName("mencionar")
@@ -41,7 +41,7 @@ module.exports = {
 
             console.log(username);
             writeId(userId);
-            await interaction.reply({ content: `${user.username} foi adicionado como admin do server` });
+            await interaction.reply({ content: `@<${user.username}> foi adicionado como meu  admin` });
         } else {
             await interaction.reply(`<@${interaction.user.id}> Você tem permissão para isso? Não. Então para de me fazer perder tempo!`);
         }
