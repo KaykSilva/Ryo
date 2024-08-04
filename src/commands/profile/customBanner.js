@@ -122,7 +122,7 @@ module.exports = {
                     } else if (i.customId === 'colorMenu') {
                         const selectedColor = parseInt(i.values[0], 10);
                         bannerManager.writeColorNumber(target, selectedColor);
-                        await i.update({ content: `Cor atualizada com sucesso <:ryo:1269693780194496542> `, components: [navigateButtons], files: [] });
+                        await i.update({ content: `Cor atualizada com sucesso <:ryo:1269693780194496542> `, components: [row], files: [] });
                     }
                 } catch (error) {
                     console.error('Erro ao processar interação:', error);
