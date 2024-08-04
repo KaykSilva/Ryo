@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const writeId = require("../../controllers/saveWhiteList");
+const writeId = require("../../controllers/handlers/whiteList/saveWhiteList");
 const fs = require('fs');
 const path = require('path');
 

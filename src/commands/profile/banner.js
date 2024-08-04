@@ -1,23 +1,45 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
+const { SlashCommandBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, ActionRow, ActionRowBuilder } = require("discord.js");
 const { createCanvas, loadImage } = require('canvas');
+const bannerManager = require("../../controllers/handlers/banners/bannerManager");
+const colorManager = require("../../controllers/handlers/banners/colorManager");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("perfil")
         .setDescription("🙂 Veja seu lindo perfil"),
     async execute(interaction) {
+        const userId = interaction.user.id;
         try {
              //default
-            let color = "#070803";
-            let bannerImage = "https://i.pinimg.com/564x/00/44/de/0044de6a836273e0a51376bc5c1c7488.jpg";
+            const defaultGeneralColor = "#070803";
+            const defaultBadgeColor = "#161616";
+            const colorNumber = bannerManager.getColorNumber(userId)
+
+            console.log(colorNumber)
+            const getColorConfig = colorManager.getColorConfig(`color${colorNumber}`);
+            let generalColor = getColorConfig.generalColor || defaultGeneralColor;
+            let badgeAreaColor = getColorConfig.badgeColor || defaultBadgeColor;
+
+            const defaultBanner = "https://i.pinimg.com/564x/00/44/de/0044de6a836273e0a51376bc5c1c7488.jpg";
+            let bannerNumber = bannerManager.getBannerNumber(userId) || 0;
+            let bannerImage = bannerManager.getBannerLink(userId, bannerNumber) || defaultBanner;
+
             let badge1 = "https://risibank.fr/cache/medias/0/31/3143/314349/full.png";
+
+            const customButton = new ButtonBuilder()
+                .setCustomId("customButton")
+                .setLabel("🎨 Personalizar perfil")
+                .setStyle(ButtonStyle.Primary)
+
+            const row = new ActionRowBuilder()
+                .addComponents(customButton)
 
             const canvas = createCanvas(500, 450); // Aumentar a altura do canvas
             const context = canvas.getContext('2d');
 
             const profileImageUrl = interaction.user.displayAvatarURL({ extension: 'png', size: 512 });
             console.log('Profile image URL:', profileImageUrl);
-
+                
             // Carregar a imagem de perfil
             const avatar = await loadImage(profileImageUrl);
 
@@ -34,7 +56,7 @@ module.exports = {
             context.drawImage(secondImage, secondImageX, secondImageY, secondImageWidth, secondImageHeight);
 
             context.save();
-            context.strokeStyle = color;
+            context.strokeStyle = generalColor;
             context.lineWidth = innerBorderWidth;
             context.strokeRect(secondImageX + innerBorderWidth / 2, secondImageY + innerBorderWidth / 2, secondImageWidth - innerBorderWidth, secondImageHeight - innerBorderWidth);
             context.restore();
@@ -44,7 +66,7 @@ module.exports = {
             const progressBarHeight = 300; // Ajuste a altura da barra de progresso
             const progressBarX = (canvas.width - progressBarWidth) / 2; // Centraliza a barra no eixo X
             const progressBarY = 170; // Posição no eixo Y
-            context.fillStyle = color;
+            context.fillStyle = generalColor;
             context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
             
             // Desenhar a barra de badges
@@ -52,7 +74,7 @@ module.exports = {
             const badgeHeight = 30; // Ajuste a altura da barra de progresso
             const badgeX = 380; // Centraliza a barra no eixo X
             const badgeY = 180; // Posição no eixo Y
-            context.fillStyle = '#161616';
+            context.fillStyle = badgeAreaColor;
             context.fillRect(badgeX, badgeY, badgeWidth, badgeHeight);
 
              // Adicionar as badges
@@ -76,7 +98,7 @@ module.exports = {
             context.save(); 
             context.beginPath();
             context.arc(maskX + borderRadius, maskY + borderRadius, borderRadius, 0, Math.PI * 2, true);
-            context.fillStyle = color; // Cor da borda (pode ser ajustada)
+            context.fillStyle = generalColor; // Cor da borda (pode ser ajustada)
             context.fill();
             context.restore();
 
@@ -96,7 +118,7 @@ module.exports = {
             
             const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'profile-image.png' });
 
-            await interaction.reply({ files: [attachment] });
+            await interaction.reply({ components:[row], files: [attachment] });
         } catch (error) {
             console.error('Erro ao gerar a imagem de perfil:', error);
             await interaction.reply({ content: 'Ocorreu um erro ao gerar seu perfil. Por favor, tente novamente mais tarde.', ephemeral: true });

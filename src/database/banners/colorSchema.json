@@ -1,0 +1,23 @@
+{
+  "color1": {
+    "colorConfig": {
+      "colorNumber": 1,
+      "generalColor": "#004fb0",
+      "badgeColor": "#1c60c3"
+    }
+  },
+  "color2": {
+    "colorConfig": {
+      "colorNumber": 2,
+      "generalColor": "#a80012",
+      "badgeColor": "#be1121"
+    }
+  },
+  "color3": {
+    "colorConfig": {
+      "colorNumber": 3,
+      "generalColor": "#a70094",
+      "badgeColor": "#bc01a7"
+    }
+  }
+}
