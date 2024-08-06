@@ -44,7 +44,7 @@ module.exports = {
                 }
             }
 			
-            if (interaction.customId === 'customButton') {
+            if (interaction.customId === 'changeBannerButton') {
                 const profileCommand = interaction.client.commands.get('personalizar');
                 if (profileCommand) {
                     try {

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, EmbedBuilder } = require("discord.js");
 const bannerManager = require("../../controllers/handlers/banners/bannerManager");
 const colorManager = require("../../controllers/handlers/banners/colorManager");
-const defaultBanner = "https://i.pinimg.com/564x/00/44/de/0044de6a836273e0a51376bc5c1c7488.jpg";
+const defaultBanner = "https://i.pinimg.com/originals/50/f5/bc/50f5bcbc82b3bc1fca33df1a1e270a58.gif";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,9 +10,8 @@ module.exports = {
     async execute(interaction) {
         try {
             const target = interaction.user.id;
-            let bannerNumber = 0;
+            let bannerNumber = 1000;
             let bannerLink = bannerManager.getBannerLink(target, bannerNumber) || defaultBanner;
-            console.log('Banner Link:', bannerLink);
 
             const changeBanner = new ButtonBuilder()
                 .setCustomId("changeBannerButton")
@@ -72,7 +71,7 @@ module.exports = {
                 .addComponents(colors);
 
             const embed = new EmbedBuilder()
-                .setDescription(`Olá <@${target}>, esse é o menu de customização. Escolha sua opção abaixo.`)
+                .setDescription(`**Olá <@${target}>, esse é o menu de customização. Escolha sua opção abaixo.**`)
                 .setImage(bannerLink);
 
             await interaction.reply({
@@ -86,36 +85,25 @@ module.exports = {
             collector.on('collect', async i => {
                 try {
                     if (i.customId === 'changeBannerButton') {
-                        const embed = new EmbedBuilder()
-                            .setDescription("Estes são seus banners")
-                            .setImage(bannerLink);
-
-                        await i.update({ embeds: [embed], components: [navigateButtons] });
-
+                        await i.update({ embeds: [getBannerEmbed()], components: [navigateButtons] });
                     } else if (i.customId === 'nextButton') {
-                        const embed = new EmbedBuilder()
-                            .setDescription("Estes são seus banners")
-                            .setImage(bannerLink);
-                            
-                        if (nextBanner()){
-                            await i.update({ embeds: [embed], components: [navigateButtons] });
+                        if (nextBanner()) {
+                            await i.update({ embeds: [getBannerEmbed()], components: [navigateButtons] });
                         } else {
-                                await i.update({ content:"*<:ryo2:1269695982963003492> Você não possui banners. Utlize /Loja para comprar mais.*"});
+                            await i.update({ content: "**<:ryo2:1269695982963003492> Você não possui mais banners. Utilize /Loja para comprar mais.**" });
+                            collector.stop();
                         }
-                        
-
                     } else if (i.customId === 'backButton') {
-                        backBanner();
-                        const embed = new EmbedBuilder()
-                            .setDescription("Estes são seus banners")
-                            .setImage(bannerLink);
-
-                        await i.update({ embeds: [embed], components: [navigateButtons] });
-
+                        if (backBanner()) {
+                            await i.update({ embeds: [getBannerEmbed()], components: [navigateButtons] });
+                        } else {
+                            await i.update({ content: "**<:ryo2:1269695982963003492> Você não possui mais banners. Utilize /Loja para comprar mais.**" });
+                            collector.stop();
+                        }
                     } else if (i.customId === 'setBanner') {
                         setNewBanner();
-                        await i.update({ content: `Banner definido para o número ${bannerNumber}.`, components: [] });
-
+                        await i.update({ content: `**Novo banner setado com sucesso <:ryo:1269693780194496542>**`, components: [] });
+                        
                     } else if (i.customId === 'changeColor') {
                         await i.update({ content: `Escolha uma cor para seu perfil 🙂`, components: [selectColors] });
 
@@ -136,21 +124,27 @@ module.exports = {
 
             function nextBanner() {
                 bannerNumber += 1;
-                bannerLink = bannerManager.getBannerLink(target, bannerNumber);
-                
-                if(bannerLink === '') {
-                    return false;
-                }
-                return true;
+                bannerLink = bannerManager.getBannerLink(target, bannerNumber) || defaultBanner;
+                return bannerLink !== defaultBanner;
             }
 
             function backBanner() {
-                bannerNumber -= 1;
-                bannerLink = bannerManager.getBannerLink(target, bannerNumber);
+                if (bannerNumber > 0) {
+                    bannerNumber -= 1;
+                    bannerLink = bannerManager.getBannerLink(target, bannerNumber) || defaultBanner;
+                    return true;
+                }
+                return false;
             }
 
             function setNewBanner() {
                 bannerManager.writeBannerNumber(target, bannerNumber);
+            }
+
+            function getBannerEmbed() {
+                return new EmbedBuilder()
+                    .setDescription("Estes são seus banners")
+                    .setImage(bannerLink);
             }
         } catch (error) {
             console.error('Erro ao processar interação:', error);

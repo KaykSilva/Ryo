@@ -20,7 +20,7 @@ module.exports = {
             let generalColor = getColorConfig.generalColor || defaultGeneralColor;
             let badgeAreaColor = getColorConfig.badgeColor || defaultBadgeColor;
 
-            const defaultBanner = "https://i.pinimg.com/564x/00/44/de/0044de6a836273e0a51376bc5c1c7488.jpg";
+            const defaultBanner = "https://i.pinimg.com/originals/54/ad/ed/54aded2832204ae26b6c57ddf7ad4854.gif";
             let bannerNumber = bannerManager.getBannerNumber(userId) || 0;
             let bannerImage = bannerManager.getBannerLink(userId, bannerNumber) || defaultBanner;
 
