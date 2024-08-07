@@ -31,6 +31,22 @@ function loadColorData() {
                         "generalColor": "#a70094",
                         "badgeColor": "#bc01a7"
                     }
+                },
+                //preto
+                "color4": {
+                    "colorConfig": {
+                        "colorNumber": 3,
+                        "generalColor": "#070803",
+                        "badgeColor": "#161616"
+                    }
+                },
+                //verde
+                "color5": {
+                    "colorConfig": {
+                        "colorNumber": 3,
+                        "generalColor": "#008740",
+                        "badgeColor": "#009a51"
+                    }
                 }
             };
             fs.writeFileSync(colorFile, JSON.stringify(initialData, null, 2));

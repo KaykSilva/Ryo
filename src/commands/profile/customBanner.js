@@ -65,6 +65,14 @@ module.exports = {
                         .setLabel('Roxo')
                         .setDescription('Deixe seu perfil roxo')
                         .setValue("3"),
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel('Preto')
+                        .setDescription('Deixe seu perfil preto')
+                        .setValue("4"),
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel('Verde')
+                        .setDescription('Deixe seu perfil verde')
+                        .setValue("5"),
                 );
 
             const selectColors = new ActionRowBuilder()

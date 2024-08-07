@@ -19,5 +19,19 @@
       "generalColor": "#a70094",
       "badgeColor": "#bc01a7"
     }
+  },
+  "color4": {
+    "colorConfig": {
+      "colorNumber": 3,
+      "generalColor": "#070803",
+      "badgeColor": "#161616"
+    }
+  },
+  "color5": {
+    "colorConfig": {
+      "colorNumber": 3,
+      "generalColor": "#008740",
+      "badgeColor": "#009a51"
+    }
   }
 }
