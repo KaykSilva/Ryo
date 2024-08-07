@@ -10,7 +10,7 @@ module.exports = {
     async execute(interaction) {
         try {
             const target = interaction.user.id;
-            let bannerNumber = 1000;
+            let bannerNumber = 0;
             let bannerLink = bannerManager.getBannerLink(target, bannerNumber) || defaultBanner;
 
             const changeBanner = new ButtonBuilder()
@@ -124,14 +124,15 @@ module.exports = {
 
             function nextBanner() {
                 bannerNumber += 1;
-                bannerLink = bannerManager.getBannerLink(target, bannerNumber) || defaultBanner;
-                return bannerLink !== defaultBanner;
+                bannerLink = bannerManager.getBannerLink(target, bannerNumber);
+                console.log("banner catado",bannerLink)
+                return bannerLink;
             }
 
             function backBanner() {
                 if (bannerNumber > 0) {
                     bannerNumber -= 1;
-                    bannerLink = bannerManager.getBannerLink(target, bannerNumber) || defaultBanner;
+                    bannerLink = bannerManager.getBannerLink(target, bannerNumber);
                     return true;
                 }
                 return false;

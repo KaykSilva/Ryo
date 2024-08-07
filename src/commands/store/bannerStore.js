@@ -53,11 +53,13 @@ module.exports = {
 
         collector.on('collect', async i => {
             try {
+                await i.deferUpdate();
+                
                 if (i.customId === 'nextButton') {
                     if (nextBanner()) {
                         await updateStoreEmbed(i);
                     } else {
-                        await i.update({ content: "Não há mais banners disponíveis", components: [navigateButtons] });
+                        await i.editReply({ content: "Não há mais banners disponíveis", components: [navigateButtons] });
                     }
                 } else if (i.customId === 'backButton') {
                     if (backBanner()) {
@@ -65,14 +67,16 @@ module.exports = {
                     }
                 } else if (i.customId === 'buyBanner') {
                     if (buyBanner()) {
-                        await i.update({ content: `<@${userId}> Banner comprado com sucesso. <:ryo:1269693780194496542>`, components: [] });
+                        await i.editReply({ content: `<@${userId}> Banner comprado com sucesso. <:ryo:1269693780194496542>`, components: [] });
                     } else {
-                        await i.update({ content: `<@${userId}> Você não possui Ryo coins suficientes <:sad:1270177365074382941>`, components: [] });
+                        await i.editReply({ content: `<@${userId}> Você não possui Ryo coins suficientes <:sad:1270177365074382941>`, components: [] });
                     }
                 }
             } catch (error) {
                 console.error('Erro ao processar interação:', error);
-                await i.followUp({ content: 'Houve um erro ao processar sua solicitação.', ephemeral: true });
+                if (!i.replied && !i.deferred) {
+                    await i.followUp({ content: 'Houve um erro ao processar sua solicitação.', ephemeral: true });
+                }
             }
         });
 
@@ -121,7 +125,7 @@ module.exports = {
                     { name: ' Nome:', value: bannerName, inline: true },
                     { name: ' Valor:', value: bannerValue, inline: true },
                 );
-            await interaction.update({ embeds: [embed], components: [navigateButtons] });
+            await interaction.editReply({ embeds: [embed], components: [navigateButtons] });
         }
     }
 };
