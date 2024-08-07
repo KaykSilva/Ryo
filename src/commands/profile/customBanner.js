@@ -93,32 +93,32 @@ module.exports = {
             collector.on('collect', async i => {
                 try {
                     if (i.customId === 'changeBannerButton') {
-                        await i.update({ embeds: [getBannerEmbed()], components: [navigateButtons] });
+                        await i.editReply({ embeds: [getBannerEmbed()], components: [navigateButtons] });
                     } else if (i.customId === 'nextButton') {
                         if (nextBanner()) {
-                            await i.update({ embeds: [getBannerEmbed()], components: [navigateButtons] });
+                            await i.editReply({ embeds: [getBannerEmbed()], components: [navigateButtons] });
                         } else {
-                            await i.update({ content: "**<:ryo2:1269695982963003492> Você não possui mais banners. Utilize /Loja para comprar mais.**" });
+                            await i.editReply({ content: "**<:ryo2:1269695982963003492> Você não possui mais banners. Utilize /Loja para comprar mais.**" });
                             collector.stop();
                         }
                     } else if (i.customId === 'backButton') {
                         if (backBanner()) {
-                            await i.update({ embeds: [getBannerEmbed()], components: [navigateButtons] });
+                            await i.editReply({ embeds: [getBannerEmbed()], components: [navigateButtons] });
                         } else {
-                            await i.update({ content: "**<:ryo2:1269695982963003492> Você não possui mais banners. Utilize /Loja para comprar mais.**" });
+                            await i.editReply({ content: "**<:ryo2:1269695982963003492> Você não possui mais banners. Utilize /Loja para comprar mais.**" });
                             collector.stop();
                         }
                     } else if (i.customId === 'setBanner') {
                         setNewBanner();
-                        await i.update({ content: `**Novo banner setado com sucesso <:ryo:1269693780194496542>**`, components: [] });
+                        await i.editReply({ content: `**Novo banner setado com sucesso <:ryo:1269693780194496542>**`, components: [] });
                         
                     } else if (i.customId === 'changeColor') {
-                        await i.update({ content: `Escolha uma cor para seu perfil 🙂`, components: [selectColors] });
+                        await i.editReply({ content: `Escolha uma cor para seu perfil 🙂`, components: [selectColors] });
 
                     } else if (i.customId === 'colorMenu') {
                         const selectedColor = parseInt(i.values[0], 10);
                         bannerManager.writeColorNumber(target, selectedColor);
-                        await i.update({ content: `Cor atualizada com sucesso <:ryo:1269693780194496542> `, components: [row], files: [] });
+                        await i.editReply({ content: `Cor atualizada com sucesso <:ryo:1269693780194496542> `, components: [row], files: [] });
                     }
                 } catch (error) {
                     console.error('Erro ao processar interação:', error);

@@ -59,7 +59,7 @@ module.exports = {
                     if (nextBanner()) {
                         await updateStoreEmbed(i);
                     } else {
-                        await i.editReply({ content: "Não há mais banners disponíveis", components: [navigateButtons] });
+                        await i.editReply({ content: "**Não há mais banners disponíveis**", components: [navigateButtons] });
                     }
                 } else if (i.customId === 'backButton') {
                     if (backBanner()) {
